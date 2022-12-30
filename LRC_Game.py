@@ -1,7 +1,7 @@
 # Left, Right, Center Dice Game
 import random
 
-pot = 0
+center_pot = 0
 dice = ['left', 'right', 'center', 'O', 'O', 'O']
 players = []
 
@@ -42,7 +42,7 @@ def assemble_players():
     return
 
 
-def player_list():
+def show_players():
     print("The players are: ")
     print()
     for i in players:
@@ -64,8 +64,8 @@ def left_player(players, starting_player):
 
 
 def dice_roll(players, starting_player):
-    global pot, dice
-    current_player = starting_player
+    global center_pot, dice
+    current_player = players.index(starting_player)
     left_player = players.index(current_player)-1
     if players.index(current_player) == 0:
         left_player = players[-1]
@@ -73,7 +73,7 @@ def dice_roll(players, starting_player):
     if players.index(current_player) == len(players):
         right_player = players[0]
 
-    if players.chips > 0:
+    if current_player.chips > 0:
         for _ in range(current_player.chips):
             roll_result = random.choice(dice)
             if roll_result == 'left':
@@ -84,10 +84,10 @@ def dice_roll(players, starting_player):
                 right_player.chips += 1
             if roll_result == 'center':
                 current_player.chips -= 1
-                pot += 1
+                center_pot += 1
             if roll_result == 'O':
                 continue
-    elif:
+    elif current_player.chips == 0:
         print(
             f"{current_player.name} has no chips, play will proceed to {left_player.name}")
         return
@@ -95,8 +95,8 @@ def dice_roll(players, starting_player):
 
 def play_game():
     assemble_players()
-    player_list()
-    left_player(players, starting_player())
+    show_players()
+    dice_roll(players, starting_player())
 
 
 play_game()
