@@ -5,17 +5,32 @@ center_pot = 0
 players = []
 
 
+def pluralizer(number):
+    if number == 1:
+        return ''
+    else:
+        return 's'
+
+
 class Player:
     def __init__(self, name):
         self.__name = name
         self.chips = 3
 
     def __str__(self):
-        return f"{self.__name}: {self.chips} chips"
+        return f"{self.__name}: {self.chips} chip{pluralizer(self.chips)}"
 
     @property
     def name(self):
         return f"{self.__name}"
+
+
+def assemble_players():
+    #how_many_players = int(input("how many people will be playing? "))
+    how_many_players = 5
+    for name in random_name(how_many_players):
+        players.append(Player(name))
+    return
 
 
 def random_name(number):
@@ -32,23 +47,6 @@ def random_name(number):
         if len(dupe_checker) >= number:
             break
     return dupe_checker
-
-
-def assemble_players():
-    how_many_players = int(input("how many people will be playing? "))
-    for name in random_name(how_many_players):
-        players.append(Player(name))
-    return
-
-
-def show_players():
-    print("The players are: ")
-    print()
-    for i in players:
-        print(i)
-    print()
-    print(f"There are {center_pot} chips in the middle.")
-    return
 
 
 def starting_player():
@@ -70,7 +68,17 @@ def starting_player():
     else:
         right_player = players[starting_player_index+1]
 
-        return starting_player, left_player, right_player
+    return starting_player, left_player, right_player
+
+
+def show_players():
+    print("The players are: ")
+    print()
+    for i in players:
+        print(i)
+    print()
+    print(f"There are {center_pot} chips in the middle.")
+    return
 
 
 def dice_roll(players):
@@ -81,6 +89,12 @@ def dice_roll(players):
     print(f"{current_player.name} will start")
 
     while True:
+        if check_chips():
+            print("The game is over")
+            print(
+                f"{max((i for i in players), key=lambda x:x.chips).name} has won! They will take the pot.")
+            break
+
         if current_player.chips > 0:
             for _ in range(current_player.chips):
                 roll_result = random.choice(dice)
@@ -97,18 +111,9 @@ def dice_roll(players):
                     continue
 
         elif current_player.chips == 0:
-            print(
-                f"{current_player.name} has no chips, play will proceed to {left_player.name}")
             current_player = players[players.index(current_player)-1]
             left_player = players[players.index(left_player)-1]
             right_player = players[players.index(right_player)-1]
-
-        if check_chips():
-            print("The game is over")
-            show_players()
-            print(
-                f"{max((i for i in players), key=lambda x:x.chips)} has won! They take the pot")
-            break
 
 
 def check_chips():
