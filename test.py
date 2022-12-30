@@ -1,3 +1,6 @@
+import random
+
+
 def dice_roll(players, starting_player):
     global center_pot, dice
     current_player = players.index(starting_player)
@@ -46,5 +49,21 @@ def random_name(number):
 
 if __name__ == "__main__":
 
-    players = random_name(5)
-    print(players)
+    players = ['Wally', 'Charles', 'Carol', 'Astrid', 'Joe']
+    starting_player = 'Joe'
+
+    current_player_index = players.index(starting_player)
+    current_player = players[current_player_index]
+
+    if current_player_index == 0:
+        left_player = players[-1]
+    else:
+        left_player = players[current_player_index-1]
+
+    if current_player_index == len(players)-1:
+        right_player = players[0]
+    else:
+        right_player = players[current_player_index+1]
+
+    print(
+        f"left: {left_player}, starter: {current_player}, right: {right_player}")
