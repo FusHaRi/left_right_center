@@ -58,38 +58,44 @@ def starting_player():
 
 
 def left_player(players, starting_player):
-    current_player = starting_player
-    left_player = players[(current_player)-1]
-    print(left_player)
+    left_player = players.index(starting_player)-1
+    print(f"left {players[left_player].name}")
     return
 
 
 def dice_roll(players, starting_player):
     global pot, dice
     current_player = starting_player
-    left_player = players.find(starting_player)-1
+    left_player = players.index(current_player)-1
+    if players.index(current_player) == 0:
+        left_player = players[-1]
+    right_player = players.index(current_player)+1
+    if players.index(current_player) == len(players):
+        right_player = players[0]
+
     if players.chips > 0:
         for _ in range(current_player.chips):
             roll_result = random.choice(dice)
             if roll_result == 'left':
                 current_player.chips -= 1
-
+                left_player.chips += 1
             if roll_result == 'right':
                 current_player.chips -= 1
+                right_player.chips += 1
             if roll_result == 'center':
-                pot += 1
                 current_player.chips -= 1
+                pot += 1
             if roll_result == 'O':
                 continue
-    else:
-        print(f"{player.name} has no chips")
+    elif:
+        print(
+            f"{current_player.name} has no chips, play will proceed to {left_player.name}")
         return
 
 
 def play_game():
     assemble_players()
     player_list()
-    starting_player()
     left_player(players, starting_player())
 
 
