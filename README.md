@@ -9,6 +9,7 @@ I received this game as a stocking stuffer for Christmas 2022 and, upon reading 
 ## How to Play Left Right Center Dice
 1. Give three chips to each player
 2. Player 1 rolls one dice for each chip in their posession
+    * As the physical game ships with three dice, players are limited to rolling up to three dice per turn regardless of their chip count
 3. Rolling "Left" means the player passes a chip to the left. Rolling "Right" means the player passes a chip to the right. Rolling "Center" means the player places a chip in the center. Rolling "O" means the player keeps their chips
 4. Player 1 passes the dice to the player on their left (Player 2)
 5. Players may continue even after losing chips as another player may pass chips to them
