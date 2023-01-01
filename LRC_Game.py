@@ -80,33 +80,33 @@ def rolled_left(current_player, left_player):
     current_player.chips -= 1
     left_player.chips += 1
     return f"{current_player.name} rolled left, gave one chip to {left_player.name}.\n\
-        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}\n"
 
 
 def rolled_right(current_player, right_player):
     current_player.chips -= 1
     right_player.chips += 1
     return f"{current_player.name} rolled right, gave one chip to {right_player.name}.\n\
-        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}\n"
 
 
 def rolled_center(current_player, center_pot):
     current_player.chips -= 1
     center_pot += 1
     return f"{current_player.name} rolled center, put one chip in the center.\n\
-        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}\n"
 
 
 def rolled_O(current_player):
     return f"{current_player.name} rolled O and got to keep a chip.\n\
-        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}\n"
 
 
 def dice_roll(players):
     center_pot = 0
     turn_counter = 0
     dice = ['left', 'right', 'center', 'O', 'O', 'O']
-    verbose = []
+    verbose = ""
 
     current_player, left_player, right_player = starting_player()
     print(f"{current_player.name} will start")
@@ -125,20 +125,19 @@ def dice_roll(players):
 
         if current_player.chips > 0:
             turn_counter += 1
-            verbose.append(
-                f"Turn {turn_counter}: {current_player.name} to roll.")
+            verbose += f"\nTurn {turn_counter}: {current_player.name} to roll.\n"
             roll_count = 0
             for _ in range(current_player.chips):
                 roll_count += 1
                 roll_result = random.choice(dice)
                 if roll_result == 'left':
-                    verbose.append(rolled_left(current_player, left_player))
+                    verbose += rolled_left(current_player, left_player)
                 if roll_result == 'right':
-                    verbose.append(rolled_right(current_player, right_player))
+                    verbose += rolled_right(current_player, right_player)
                 if roll_result == 'center':
-                    verbose.append(rolled_center(current_player, center_pot))
+                    verbose += rolled_center(current_player, center_pot)
                 if roll_result == 'O':
-                    verbose.append(rolled_O(current_player))
+                    verbose += rolled_O(current_player)
                 if roll_count >= 3:
                     break
             current_player = players[players.index(current_player)-1]
@@ -147,10 +146,8 @@ def dice_roll(players):
 
         elif current_player.chips == 0:
             turn_counter += 1
-            verbose.append(
-                f"\nTurn {turn_counter}: {current_player.name} to roll.")
-            verbose.append(
-                f"{current_player.name} has no chips. Play proceeds to {left_player.name}.")
+            verbose += f"\nTurn {turn_counter}: {current_player.name} to roll.\n"
+            verbose += f"{current_player.name} has no chips. Play proceeds to {left_player.name}.\n"
             current_player = players[players.index(current_player)-1]
             left_player = players[players.index(left_player)-1]
             right_player = players[players.index(right_player)-1]
