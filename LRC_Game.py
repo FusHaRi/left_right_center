@@ -102,6 +102,14 @@ def rolled_O(current_player):
         {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}\n"
 
 
+def check_chips():
+    chip_checker = []
+    for i in players:
+        if i.chips > 0:
+            chip_checker.append(i.chips)
+    return len(chip_checker) == 1
+
+
 def dice_roll(players):
     center_pot = 0
     turn_counter = 0
@@ -116,9 +124,11 @@ def dice_roll(players):
 
     while True:
         if check_chips():
+            winner = max((i for i in players), key=lambda x: x.chips)
+            winner.chips = len(players) * 3
             print(f"The game is over after {turn_counter} turns.")
             print(
-                f"{max((i for i in players), key=lambda x:x.chips).name} has won! They will take the pot.\n")
+                f"{winner.name} has won! They will take the pot.\n")
             if full_story.lower() == 'y':
                 print(verbose)
             break
@@ -140,6 +150,7 @@ def dice_roll(players):
                     verbose += rolled_O(current_player)
                 if roll_count >= 3:
                     break
+
             current_player = players[players.index(current_player)-1]
             left_player = players[players.index(left_player)-1]
             right_player = players[players.index(right_player)-1]
@@ -151,14 +162,6 @@ def dice_roll(players):
             current_player = players[players.index(current_player)-1]
             left_player = players[players.index(left_player)-1]
             right_player = players[players.index(right_player)-1]
-
-
-def check_chips():
-    chip_checker = []
-    for i in players:
-        if i.chips > 0:
-            chip_checker.append(i.chips)
-    return len(chip_checker) == 1
 
 
 def play_game():
