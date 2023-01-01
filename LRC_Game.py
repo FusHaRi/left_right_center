@@ -25,15 +25,6 @@ class Player:
         return f"{self.__name}"
 
 
-def assemble_players():
-    how_many_players = int(input("how many people will be playing? "))
-    # how_many_players = 5
-
-    for name in random_name(how_many_players):
-        players.append(Player(name))
-    return
-
-
 def random_name(number):
     dupe_checker = []
     options = open('names.txt').read().splitlines()
@@ -48,6 +39,29 @@ def random_name(number):
         if len(dupe_checker) >= number:
             break
     return dupe_checker
+
+
+def assemble_players():
+    how_many_players = int(input("how many people will be playing? "))
+    # how_many_players = 5
+    choose = input(
+        "Would you like to name the players yourself? [Y]es or [N]o. (Choosing no will fill in random player names. ")
+
+    if choose.lower() == 'y':
+        for _ in range(how_many_players):
+            player_name = str(input(
+                "Please enter a player name: (Press [Enter] to add one random player name)"))
+            if player_name == "":
+                players.append(Player(random_name(1)[0]))
+                print(f"{players[-1].name} has entered the game.")
+            else:
+                players.append(Player(player_name))
+
+    else:
+        for name in random_name(how_many_players):
+            players.append(Player(name))
+
+    return
 
 
 def starting_player():
@@ -124,13 +138,13 @@ def dice_roll(players):
 
     while True:
         if check_chips():
+            if full_story.lower() == 'y':
+                print(verbose)
             winner = max((i for i in players), key=lambda x: x.chips)
             winner.chips = len(players) * 3
             print(f"The game ended after {turn_counter} turns.")
             print(
                 f"{winner.name} has won! They will take the pot.\n")
-            if full_story.lower() == 'y':
-                print(verbose)
             break
 
         if current_player.chips > 0:
