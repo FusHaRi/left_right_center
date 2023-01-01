@@ -26,8 +26,8 @@ class Player:
 
 
 def assemble_players():
-    #how_many_players = int(input("how many people will be playing? "))
-    how_many_players = 5
+    how_many_players = int(input("how many people will be playing? "))
+    # how_many_players = 5
 
     for name in random_name(how_many_players):
         players.append(Player(name))
@@ -126,7 +126,7 @@ def dice_roll(players):
         if check_chips():
             winner = max((i for i in players), key=lambda x: x.chips)
             winner.chips = len(players) * 3
-            print(f"The game is over after {turn_counter} turns.")
+            print(f"The game ended after {turn_counter} turns.")
             print(
                 f"{winner.name} has won! They will take the pot.\n")
             if full_story.lower() == 'y':
