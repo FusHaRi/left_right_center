@@ -1,7 +1,6 @@
 # Left, Right, Center Dice Game
 import random
 
-center_pot = 0
 players = []
 
 
@@ -16,6 +15,7 @@ class Player:
     def __init__(self, name):
         self.__name = name
         self.chips = 3
+        self.earnings = 0
 
     def __str__(self):
         return f"{self.__name}: {self.chips} chip{pluralizer(self.chips)}"
@@ -28,6 +28,7 @@ class Player:
 def assemble_players():
     #how_many_players = int(input("how many people will be playing? "))
     how_many_players = 5
+
     for name in random_name(how_many_players):
         players.append(Player(name))
     return
@@ -53,11 +54,6 @@ def starting_player():
     starting_player = random.choice(players)
     starting_player_index = players.index(starting_player)
 
-    if starting_player_index < 0:
-        starting_player_index == len(players)-1
-    else:
-        starting_player = players[starting_player_index]
-
     if starting_player_index <= 0:
         left_player = players[-1]
     else:
@@ -77,40 +73,84 @@ def show_players():
     for i in players:
         print(i)
     print()
-    print(f"There are {center_pot} chips in the middle.")
     return
 
 
+def rolled_left(current_player, left_player):
+    current_player.chips -= 1
+    left_player.chips += 1
+    return f"{current_player.name} rolled left, gave one chip to {left_player.name}.\n\
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+
+
+def rolled_right(current_player, right_player):
+    current_player.chips -= 1
+    right_player.chips += 1
+    return f"{current_player.name} rolled right, gave one chip to {right_player.name}.\n\
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+
+
+def rolled_center(current_player, center_pot):
+    current_player.chips -= 1
+    center_pot += 1
+    return f"{current_player.name} rolled center, put one chip in the center.\n\
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+
+
+def rolled_O(current_player):
+    return f"{current_player.name} rolled O and got to keep a chip.\n\
+        {current_player.name} now has {current_player.chips} chip{pluralizer(current_player.chips)}"
+
+
 def dice_roll(players):
-    global center_pot
+    center_pot = 0
+    turn_counter = 0
     dice = ['left', 'right', 'center', 'O', 'O', 'O']
+    verbose = []
 
     current_player, left_player, right_player = starting_player()
     print(f"{current_player.name} will start")
 
+    full_story = input(
+        "Would you like to see how the game goes? [Y]es, show me every turn, or, [N]o just show me the results. ")
+
     while True:
         if check_chips():
-            print("The game is over")
+            print(f"The game is over after {turn_counter} turns.")
             print(
-                f"{max((i for i in players), key=lambda x:x.chips).name} has won! They will take the pot.")
+                f"{max((i for i in players), key=lambda x:x.chips).name} has won! They will take the pot.\n")
+            if full_story.lower() == 'y':
+                print(verbose)
             break
 
         if current_player.chips > 0:
+            turn_counter += 1
+            verbose.append(
+                f"Turn {turn_counter}: {current_player.name} to roll.")
+            roll_count = 0
             for _ in range(current_player.chips):
+                roll_count += 1
                 roll_result = random.choice(dice)
                 if roll_result == 'left':
-                    current_player.chips -= 1
-                    left_player.chips += 1
+                    verbose.append(rolled_left(current_player, left_player))
                 if roll_result == 'right':
-                    current_player.chips -= 1
-                    right_player.chips += 1
+                    verbose.append(rolled_right(current_player, right_player))
                 if roll_result == 'center':
-                    current_player.chips -= 1
-                    center_pot += 1
+                    verbose.append(rolled_center(current_player, center_pot))
                 if roll_result == 'O':
-                    continue
+                    verbose.append(rolled_O(current_player))
+                if roll_count >= 3:
+                    break
+            current_player = players[players.index(current_player)-1]
+            left_player = players[players.index(left_player)-1]
+            right_player = players[players.index(right_player)-1]
 
         elif current_player.chips == 0:
+            turn_counter += 1
+            verbose.append(
+                f"\nTurn {turn_counter}: {current_player.name} to roll.")
+            verbose.append(
+                f"{current_player.name} has no chips. Play proceeds to {left_player.name}.")
             current_player = players[players.index(current_player)-1]
             left_player = players[players.index(left_player)-1]
             right_player = players[players.index(right_player)-1]
