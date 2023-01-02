@@ -15,3 +15,5 @@ I received this game as a stocking stuffer for Christmas 2022 and, upon reading 
 5. Players may continue even after losing chips as another player may pass chips to them
 6. Play continues until only one player has chips remaining
 7. The last player wins the chips in the center
+
+![left_right_center](https://user-images.githubusercontent.com/117577911/210280027-8470b049-d6b3-4ade-8880-379b0811fa97.jpg)
