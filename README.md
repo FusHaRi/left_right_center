@@ -2,7 +2,7 @@
 
 The program plays through the entirety of a game called Left Right Center Dice and prints out the winner and ending point values.
 
-The user is asked to input the number of players, the program then creates that amount of randomly named players using the associated 'names.txt' file and begiuns the game with a randomly chosen player from the list.
+The user is asked to input the number of players.he The program then allows the user to name players or create randomly named players using the associated 'names.txt' file and begins the game with a randomly chosen player from the list.
 
 I received this game as a stocking stuffer for Christmas 2022 and, upon reading the rules and finding that players can make no decisions which meaningfully impact the outcome of the game, I thought this was an excellent candidate for automation.
 
